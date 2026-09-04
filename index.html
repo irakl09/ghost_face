@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toy Story 3D Figures Set — Woody • Buzz • Jessie • Rex</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0b14;
+      --bg2: #111327;
+      --card: rgba(255,255,255,0.04);
+      --card-border: rgba(255,255,255,0.08);
+      --text: #e8eaf6;
+      --muted: #9aa0c2;
+      --accent: #00d4c8;
+      --woody: #f4c430;
+      --buzz: #4ecdc4;
+      --jessie: #ff6b6b;
+      --rex: #7ed957;
+      --grad: linear-gradient(135deg, #00d4c8, #7b61ff);
+      --shadow: 0 20px 50px rgba(0,0,0,0.4);
+      --radius: 20px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* NAV */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 40px;
+      background: rgba(10,11,20,0.75);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--card-border);
+      transition: all 0.3s;
+    }
+    .nav.scrolled { padding: 12px 40px; background: rgba(10,11,20,0.95); }
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.4rem;
+      color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 10px;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta {
+      background: var(--grad); color: #0a0b14; padding: 10px 22px; border-radius: 50px;
+      font-weight: 600; text-decoration: none; font-size: 0.9rem; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,212,200,0.35); }
+    .hamburger { display: none; background: none; border: none; cursor: pointer; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--text); margin: 6px 0; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center; position: relative;
+      padding: 140px 0 80px; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 20%, rgba(0,212,200,0.12) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 50% at 20% 80%, rgba(123,97,255,0.1) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 40% at 90% 70%, rgba(255,107,107,0.08) 0%, transparent 50%);
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 680px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,212,200,0.1); border: 1px solid rgba(0,212,200,0.25);
+      padding: 8px 16px; border-radius: 50px; font-size: 0.85rem; color: var(--accent);
+      margin-bottom: 28px; font-weight: 500;
+    }
+    .hero-badge-dot {
+      width: 8px; height: 8px; background: var(--accent); border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.3); }
+    }
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 4.5rem); font-weight: 700; line-height: 1.1;
+      margin-bottom: 20px; letter-spacing: -0.03em;
+    }
+    .hero h1 em {
+      font-style: normal; background: var(--grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-sub { font-size: 1.15rem; color: var(--muted); max-width: 520px; margin-bottom: 36px; }
+    .hero-chips { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 40px; }
+    .chip {
+      background: var(--card); border: 1px solid var(--card-border);
+      padding: 12px 18px; border-radius: 14px; backdrop-filter: blur(10px);
+    }
+    .chip-val { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; font-weight: 700; }
+    .chip-label { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+    .chip.woody { border-color: rgba(244,196,48,0.3); }
+    .chip.woody .chip-val { color: var(--woody); }
+    .chip.buzz { border-color: rgba(78,205,196,0.3); }
+    .chip.buzz .chip-val { color: var(--buzz); }
+    .chip.jessie { border-color: rgba(255,107,107,0.3); }
+    .chip.jessie .chip-val { color: var(--jessie); }
+    .chip.rex { border-color: rgba(126,217,87,0.3); }
+    .chip.rex .chip-val { color: var(--rex); }
+    .hero-cta-group { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--grad); color: #0a0b14; padding: 16px 32px; border-radius: 50px;
+      font-weight: 700; text-decoration: none; font-size: 1rem;
+      display: inline-flex; align-items: center; gap: 10px;
+      transition: transform 0.2s, box-shadow 0.2s; border: none; cursor: pointer;
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,212,200,0.4); }
+    .btn-secondary {
+      background: transparent; color: var(--text); padding: 16px 32px; border-radius: 50px;
+      font-weight: 600; text-decoration: none; border: 1px solid var(--card-border); transition: all 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* SECTION */
+    section { padding: 100px 0; position: relative; }
+    .section-label {
+      font-size: 0.85rem; font-weight: 600; color: var(--accent);
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; line-height: 1.2;
+      margin-bottom: 20px; letter-spacing: -0.02em;
+    }
+    .section-title em {
+      font-style: normal; background: var(--grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .section-desc { color: var(--muted); font-size: 1.1rem; max-width: 560px; margin-bottom: 50px; }
+
+    /* CHARACTERS */
+    .characters-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;
+    }
+    .char-card {
+      background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius);
+      padding: 32px 28px; transition: all 0.35s cubic-bezier(0.22,1,0.36,1);
+      position: relative; overflow: hidden;
+    }
+    .char-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; opacity: 0; transition: opacity 0.3s;
+    }
+    .char-card:hover { transform: translateY(-8px); border-color: rgba(255,255,255,0.15); box-shadow: var(--shadow); }
+    .char-card:hover::before { opacity: 1; }
+    .char-card.woody::before { background: var(--woody); }
+    .char-card.buzz::before { background: var(--buzz); }
+    .char-card.jessie::before { background: var(--jessie); }
+    .char-card.rex::before { background: var(--rex); }
+    .char-icon {
+      width: 100%; height: 180px; border-radius: 16px; overflow: hidden;
+      margin-bottom: 20px; background: #1a1a2e;
+    }
+    .char-icon img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 0.4s ease;
+    }
+    .char-card:hover .char-icon img { transform: scale(1.06); }
+    .char-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; margin-bottom: 8px; }
+    .char-card p { color: var(--muted); font-size: 0.95rem; margin-bottom: 16px; }
+    .char-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tag {
+      font-size: 0.75rem; padding: 4px 10px; border-radius: 50px;
+      background: rgba(255,255,255,0.06); color: var(--muted);
+    }
+
+    /* 3D CAROUSEL GALLERY */
+    .gallery-section {
+      min-height: 700px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg2);
+      overflow: hidden;
+      position: relative;
+    }
+    .gallery-header { text-align: center; margin-bottom: 40px; position: relative; z-index: 5; }
+    #drag-container, #spin-container {
+      position: relative;
+      display: flex;
+      margin: auto;
+      transform-style: preserve-3d;
+      transform: rotateX(-10deg);
+    }
+    #drag-container {
+      width: 100%;
+      max-width: 900px;
+      height: 420px;
+      perspective: 1000px;
+    }
+    #spin-container {
+      width: 140px;
+      height: 200px;
+    }
+    #spin-container img {
+      transform-style: preserve-3d;
+      position: absolute;
+      left: 0; top: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,212,200,0.35);
+      -webkit-box-reflect: below 8px linear-gradient(transparent, transparent, rgba(0,0,0,0.3));
+      cursor: grab;
+      transition: box-shadow 0.3s;
+    }
+    #spin-container img:hover {
+      box-shadow: 0 0 20px rgba(0,212,200,0.7);
+    }
+    #spin-container p {
+      font-family: 'Space Grotesk', sans-serif;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotateX(90deg);
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      white-space: nowrap;
+      letter-spacing: 0.05em;
+    }
+    #ground {
+      width: 720px;
+      height: 720px;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotateX(90deg);
+      background: -webkit-radial-gradient(center center, farthest-side, rgba(0,212,200,0.15), transparent);
+    }
+    @keyframes spin {
+      from { transform: rotateY(0deg); }
+      to { transform: rotateY(360deg); }
+    }
+    @keyframes spinRevert {
+      from { transform: rotateY(360deg); }
+      to { transform: rotateY(0deg); }
+    }
+
+    /* FEATURES */
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;
+    }
+    .feat-card {
+      background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius);
+      padding: 28px; transition: all 0.3s;
+    }
+    .feat-card:hover { border-color: rgba(0,212,200,0.3); transform: translateY(-4px); }
+    .feat-icon {
+      width: 48px; height: 48px; border-radius: 12px; background: rgba(0,212,200,0.12);
+      display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+      margin-bottom: 18px; color: var(--accent);
+    }
+    .feat-card h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 600; }
+    .feat-card p { color: var(--muted); font-size: 0.95rem; }
+
+    /* STATS */
+    .stats-bar {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+      background: var(--card); border: 1px solid var(--card-border);
+      border-radius: var(--radius); padding: 40px 20px; text-align: center;
+    }
+    .stat-num {
+      font-family: 'Space Grotesk', sans-serif; font-size: 2.4rem; font-weight: 700;
+      background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .stat-label { color: var(--muted); font-size: 0.9rem; margin-top: 4px; }
+
+    /* PRICING */
+    .pricing-card {
+      max-width: 480px; margin: 0 auto;
+      background: linear-gradient(160deg, rgba(0,212,200,0.08), rgba(123,97,255,0.06));
+      border: 1px solid rgba(0,212,200,0.25); border-radius: 28px;
+      padding: 48px 40px; text-align: center; position: relative; overflow: hidden;
+    }
+    .price {
+      font-family: 'Space Grotesk', sans-serif; font-size: 4rem; font-weight: 700; margin: 16px 0 8px;
+    }
+    .price span { font-size: 1.2rem; color: var(--muted); font-weight: 500; }
+    .price-list { list-style: none; text-align: left; margin: 32px 0; }
+    .price-list li {
+      padding: 10px 0; border-bottom: 1px solid var(--card-border);
+      display: flex; align-items: center; gap: 12px; color: var(--muted);
+    }
+    .price-list li::before { content: '✓'; color: var(--accent); font-weight: 700; }
+
+    /* FAQ */
+    .faq-item {
+      background: var(--card); border: 1px solid var(--card-border);
+      border-radius: 16px; margin-bottom: 12px; overflow: hidden;
+    }
+    .faq-q {
+      padding: 20px 24px; cursor: pointer; display: flex; justify-content: space-between;
+      align-items: center; font-weight: 600; transition: background 0.2s;
+    }
+    .faq-q:hover { background: rgba(255,255,255,0.03); }
+    .faq-a {
+      max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.35s;
+      padding: 0 24px; color: var(--muted);
+    }
+    .faq-item.open .faq-a { max-height: 200px; padding: 0 24px 20px; }
+    .faq-icon { transition: transform 0.3s; color: var(--accent); }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--card-border); padding: 60px 0 40px; }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px;
+    }
+    .footer-brand p { color: var(--muted); margin-top: 12px; max-width: 280px; font-size: 0.95rem; }
+    .footer-col h4 { font-size: 0.9rem; margin-bottom: 16px; color: var(--text); }
+    .footer-col a {
+      display: block; color: var(--muted); text-decoration: none; margin-bottom: 10px;
+      font-size: 0.9rem; transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--accent); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 30px; border-top: 1px solid var(--card-border);
+      color: var(--muted); font-size: 0.85rem;
+    }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .mob-nav {
+      position: fixed; inset: 0; background: rgba(10,11,20,0.98); z-index: 999;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 28px; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    }
+    .mob-nav.open { opacity: 1; pointer-events: all; }
+    .mob-nav a { color: var(--text); font-size: 1.5rem; text-decoration: none; font-weight: 600; }
+
+    @media (max-width: 900px) {
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: block; }
+      .stats-bar { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      #drag-container { height: 360px; }
+    }
+    @media (max-width: 600px) {
+      .nav { padding: 14px 20px; }
+      .hero { padding: 120px 0 60px; }
+      .stats-bar { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav" id="nav">
+    <a href="#" class="nav-logo">Toy<span>3D</span>.</a>
+    <ul class="nav-links">
+      <li><a href="#characters">Characters</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a href="#pricing" class="nav-cta">Get the Set</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mob-nav" id="mob-nav">
+    <a href="#characters" onclick="closeMob()">Characters</a>
+    <a href="#gallery" onclick="closeMob()">Gallery</a>
+    <a href="#features" onclick="closeMob()">Features</a>
+    <a href="#pricing" onclick="closeMob()">Pricing</a>
+    <a href="#faq" onclick="closeMob()">FAQ</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          STL • 3D Print Ready • 4 Characters
+        </div>
+        <h1>Toy Story<br><em>3D Figures</em> Set</h1>
+        <p class="hero-sub">
+          Woody, Buzz Lightyear, Jessie & Rex — high-quality STL models ready for 3D printing.
+          Detailed, print-ready and perfect for your collection.
+        </p>
+        <div class="hero-chips">
+          <div class="chip woody"><div class="chip-val">Woody</div><div class="chip-label">Sheriff</div></div>
+          <div class="chip buzz"><div class="chip-val">Buzz</div><div class="chip-label">Space Ranger</div></div>
+          <div class="chip jessie"><div class="chip-val">Jessie</div><div class="chip-label">Cowgirl</div></div>
+          <div class="chip rex"><div class="chip-val">Rex</div><div class="chip-label">T-Rex</div></div>
+        </div>
+        <div class="hero-cta-group">
+          <a href="#pricing" class="btn-primary">Download Now</a>
+          <a href="#gallery" class="btn-secondary">View Gallery</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section style="padding: 40px 0 20px;">
+    <div class="container">
+      <div class="stats-bar reveal">
+        <div><div class="stat-num">4</div><div class="stat-label">Characters</div></div>
+        <div><div class="stat-num">STL</div><div class="stat-label">Format</div></div>
+        <div><div class="stat-num">HD</div><div class="stat-label">Detail</div></div>
+        <div><div class="stat-num">∞</div><div class="stat-label">Prints</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHARACTERS -->
+  <section id="characters">
+    <div class="container">
+      <div class="section-label reveal">01 — Characters</div>
+      <h2 class="section-title reveal">Your favorite<br><em>toys</em></h2>
+      <p class="section-desc reveal">Every model is optimized for FDM and Resin printers. Stands on its own and ready for painting.</p>
+      <div class="characters-grid">
+        <div class="char-card woody reveal">
+          <div class="char-icon"><img src="images/woody.jpg" alt="Woody"></div>
+          <h3>Woody</h3>
+          <p>Sheriff Woody — classic cowboy with hat, badge and that unforgettable smile. High detail on face and clothing.</p>
+          <div class="char-tags"><span class="tag">Cowboy</span><span class="tag">Leader</span><span class="tag">STL</span></div>
+        </div>
+        <div class="char-card buzz reveal" style="transition-delay:0.08s">
+          <div class="char-icon"><img src="images/buzz.jpg" alt="Buzz Lightyear"></div>
+          <h3>Buzz Lightyear</h3>
+          <p>Space Ranger — wings, helmet and the iconic purple-green suit. Ready for “To infinity and beyond!”</p>
+          <div class="char-tags"><span class="tag">Space</span><span class="tag">Hero</span><span class="tag">STL</span></div>
+        </div>
+        <div class="char-card jessie reveal" style="transition-delay:0.16s">
+          <div class="char-icon"><img src="images/jessie.jpg" alt="Jessie"></div>
+          <h3>Jessie</h3>
+          <p>Energetic cowgirl with red hair and hat. Dynamic pose with detailed hair and clothing.</p>
+          <div class="char-tags"><span class="tag">Cowgirl</span><span class="tag">Fun</span><span class="tag">STL</span></div>
+        </div>
+        <div class="char-card rex reveal" style="transition-delay:0.24s">
+          <div class="char-icon"><img src="images/rex.jpg" alt="Rex"></div>
+          <h3>Rex</h3>
+          <p>Friendly T-Rex — big eyes, tiny arms and that signature smile. Perfect for any collection.</p>
+          <div class="char-tags"><span class="tag">Dinosaur</span><span class="tag">Cute</span><span class="tag">STL</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3D GALLERY -->
+  <section class="gallery-section" id="gallery">
+    <div class="gallery-header">
+      <div class="section-label reveal">02 — Gallery</div>
+      <h2 class="section-title reveal">3D <em>Carousel</em></h2>
+      <p class="section-desc reveal" style="margin:0 auto">Drag to rotate • Inspired by the classic 3D TikTok carousel</p>
+    </div>
+
+    <div id="drag-container">
+      <div id="spin-container">
+        <img src="images/img1.jpg" alt="Preview 1">
+        <img src="images/img2.jpg" alt="Preview 2">
+        <img src="images/img3.jpg" alt="Preview 3">
+        <img src="images/img4.jpg" alt="Preview 4">
+        <img src="images/img5.jpg" alt="Preview 5">
+        <img src="images/img6.jpg" alt="Preview 6">
+        <img src="images/img7.jpg" alt="Preview 7">
+        <p>Toy Story 3D Set</p>
+      </div>
+      <div id="ground"></div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="container">
+      <div class="section-label reveal">03 — Why this set</div>
+      <h2 class="section-title reveal">Why <em>this</em> set?</h2>
+      <p class="section-desc reveal">Everything you need for successful 3D printing in one place.</p>
+      <div class="features-grid">
+        <div class="feat-card reveal">
+          <div class="feat-icon">📐</div>
+          <h3>Print-Ready STL</h3>
+          <p>Files checked and ready for direct printing. Minimal supports and good orientation.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:0.07s">
+          <div class="feat-icon">✨</div>
+          <h3>High Detail</h3>
+          <p>Facial features, clothing folds and accessories show clearly on both FDM and resin.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:0.14s">
+          <div class="feat-icon">🎨</div>
+          <h3>Paint Ready</h3>
+          <p>Surface is ready for primer and colors. Choose classic or custom style.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:0.21s">
+          <div class="feat-icon">📏</div>
+          <h3>Scalable</h3>
+          <p>Easily resize in any slicer. From small collection pieces to large display models.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:0.28s">
+          <div class="feat-icon">🔄</div>
+          <h3>One-piece or split</h3>
+          <p>Print as a single piece or split for easier printing if needed.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:0.35s">
+          <div class="feat-icon">🎁</div>
+          <h3>Perfect Gift</h3>
+          <p>Ideal for fans, collectors and 3D printing enthusiasts.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" style="background: var(--bg2);">
+    <div class="container">
+      <div class="section-label reveal" style="text-align:center">04 — Get the set</div>
+      <h2 class="section-title reveal" style="text-align:center">One set — <em>all friends</em></h2>
+      <p class="section-desc reveal" style="margin:0 auto 40px; text-align:center">Digital download. Unlimited personal prints.</p>
+      <div class="pricing-card reveal">
+        <div style="position:relative;z-index:1">
+          <div style="font-size:0.9rem;color:var(--accent);font-weight:600;letter-spacing:0.05em">COMPLETE SET</div>
+          <div class="price">$10.99 <span>USD</span></div>
+          <p style="color:var(--muted);margin-bottom:8px">One-time payment • Instant download</p>
+          <ul class="price-list">
+            <li>Woody STL</li>
+            <li>Buzz Lightyear STL</li>
+            <li>Jessie STL</li>
+            <li>Rex STL</li>
+            <li>High-resolution models</li>
+            <li>Personal use license</li>
+          </ul>
+          <a href="https://cults3d.com/en/3d-model/game/3d-printed-toy-story-figures-set-woody-buzz-jessie-rex" target="_blank" class="btn-primary" style="width:100%;justify-content:center">
+            Go to Cults3D →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="container">
+      <div class="section-label reveal">05 — FAQ</div>
+      <h2 class="section-title reveal">Frequently asked <em>questions</em></h2>
+      <div style="max-width:700px;margin-top:40px">
+        <div class="faq-item reveal">
+          <div class="faq-q" onclick="toggleFaq(this)">What file format is included?<span class="faq-icon">+</span></div>
+          <div class="faq-a">STL format. Compatible with almost every slicer (Cura, PrusaSlicer, Bambu Studio, Lychee, etc.).</div>
+        </div>
+        <div class="faq-item reveal">
+          <div class="faq-q" onclick="toggleFaq(this)">FDM or Resin?<span class="faq-icon">+</span></div>
+          <div class="faq-a">Both. Resin will show more detail, FDM gives larger size and strength.</div>
+        </div>
+        <div class="faq-item reveal">
+          <div class="faq-q" onclick="toggleFaq(this)">Do I need supports?<span class="faq-icon">+</span></div>
+          <div class="faq-a">Depends on orientation. Recommended 15–45° angle and tree supports for best results.</div>
+        </div>
+        <div class="faq-item reveal">
+          <div class="faq-q" onclick="toggleFaq(this)">Can I use it commercially?<span class="faq-icon">+</span></div>
+          <div class="faq-a">Check the license on the Cults3D page. Personal use is usually allowed; commercial use requires agreement with the author.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="text-align:center;padding:80px 0;background:linear-gradient(180deg,transparent,rgba(0,212,200,0.05))">
+    <div class="container">
+      <h2 class="section-title reveal" style="margin-bottom:16px">Ready to <em>play</em>?</h2>
+      <p class="section-desc reveal" style="margin:0 auto 32px;text-align:center">Start building your Toy Story collection today.</p>
+      <a href="#pricing" class="btn-primary reveal">Get Started →</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo">Toy<span>3D</span>.</a>
+          <p>High-quality 3D models for Toy Story fans and collectors. Inspired by Cults3D product.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <a href="#characters">Characters</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <a href="https://cults3d.com" target="_blank">Cults3D</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <a href="#">Support</a>
+          <a href="#">License</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Toy3D. Inspired by CodePen Tidal & 3D Carousel.</span>
+        <span>Made for 3D makers</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Nav
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+    const hamburger = document.getElementById('hamburger');
+    const mobNav = document.getElementById('mob-nav');
+    hamburger.addEventListener('click', () => mobNav.classList.toggle('open'));
+    function closeMob() { mobNav.classList.remove('open'); }
+
+    // Reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    // FAQ
+    function toggleFaq(el) {
+      const item = el.parentElement;
+      document.querySelectorAll('.faq-item').forEach(i => { if (i !== item) i.classList.remove('open'); });
+      item.classList.toggle('open');
+    }
+
+    // ===== 3D CAROUSEL (from CodePen hoailongg) =====
+    var radius = 240;
+    var autoRotate = true;
+    var rotateSpeed = -60;
+    var imgWidth = 140;
+    var imgHeight = 200;
+
+    setTimeout(init, 100);
+    var ospin = document.getElementById('spin-container');
+    var aImg = ospin.getElementsByTagName('img');
+    var aEle = [...aImg];
+    ospin.style.width = imgWidth + "px";
+    ospin.style.height = imgHeight + "px";
+    var ground = document.getElementById('ground');
+    ground.style.width = radius * 3 + "px";
+    ground.style.height = radius * 3 + "px";
+
+    function init(delayTime) {
+      for (var i = 0; i < aEle.length; i++) {
+        aEle[i].style.transform = "rotateY(" + (i * (360 / aEle.length)) + "deg) translateZ(" + radius + "px)";
+        aEle[i].style.transition = "transform 1s";
+        aEle[i].style.transitionDelay = delayTime || (aEle.length - i) / 4 + "s";
+      }
+    }
+
+    if (autoRotate) {
+      var animationName = (rotateSpeed > 0 ? 'spin' : 'spinRevert');
+      ospin.style.animation = `${animationName} ${Math.abs(rotateSpeed)}s infinite linear`;
+    }
+
+    // Drag controls
+    var sX, sY, nX, nY, desX = 0, desY = 0, tX = 0, tY = 10;
+    var obox = document.getElementById('drag-container');
+
+    document.onpointerdown = function (e) {
+      clearInterval(obox.timer);
+      e = e || window.event;
+      sX = e.clientX;
+      sY = e.clientY;
+      this.onpointermove = function (e) {
+        e = e || window.event;
+        nX = e.clientX;
+        nY = e.clientY;
+        desX = nX - sX;
+        desY = nY - sY;
+        tX += desX * 0.1;
+        tY += desY * 0.1;
+        applyTranform(obox);
+        sX = nX;
+        sY = nY;
+      };
+      this.onpointerup = function (e) {
+        this.onpointermove = this.onpointerup = null;
+        obox.timer = setInterval(function () {
+          desX *= 0.95;
+          desY *= 0.95;
+          tX += desX * 0.1;
+          tY += desY * 0.1;
+          applyTranform(obox);
+          playSpin(false);
+          if (Math.abs(desX) < 0.5 && Math.abs(desY) < 0.5) {
+            clearInterval(obox.timer);
+            playSpin(true);
+          }
+        }, 17);
+      };
+      return false;
+    };
+
+    document.onmousewheel = function(e) {
+      e = e || window.event;
+      var d = e.wheelDelta / 20 || -e.detail;
+      radius += d;
+      init(1);
+    };
+
+    function applyTranform(obj) {
+      if(tY > 180) tY = 180;
+      if(tY < 0) tY = 0;
+      obj.style.transform = "rotateX(" + (-tY) + "deg) rotateY(" + (tX) + "deg)";
+    }
+    function playSpin(yes) {
+      ospin.style.animationPlayState = (yes ? 'running' : 'paused');
+    }
+  </script>
+</body>
+</html>
